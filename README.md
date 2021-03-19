@@ -6,7 +6,7 @@ Quickly generate a rails app with the default Legal lab (at Ubisoft Legal Innova
 
 ## Default
 
-Get a minimal rails app ready to be deployed on Heroku with debugging gems and assets configuration.
+Get a minimal rails app ready to be deployed with debugging gems and assets configuration.
 
 ```git
 rails new \
