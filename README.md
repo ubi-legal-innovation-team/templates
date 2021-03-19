@@ -12,6 +12,6 @@ Get a minimal rails app ready to be deployed on Heroku with debugging gems and a
 rails new \
   --database postgresql \
   --webpack \
-  -m https://gitlab-ncsa.ubisoft.org/adhuy/templates/-/raw/master/default.rb \
+  -m https://raw.githubusercontent.com/ubi-legal-innovation-team/templates/master/default.rb \
   CHANGE_THIS_TO_YOUR_RAILS_APP_NAME
 ```
