@@ -35,25 +35,25 @@ YAML
 ########################################
 run 'rm -rf app/assets/stylesheets'
 run 'rm -rf vendor'
-run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/rails-stylesheets/-/archive/master/rails-stylesheets-master.zip > stylesheets.zip'
+run 'curl -L https://github.com/ubi-legal-innovation-team/rails-stylesheets/archive/master.zip > stylesheets.zip'
 run 'unzip stylesheets.zip -d app/assets && rm stylesheets.zip && mv app/assets/rails-stylesheets-master app/assets/stylesheets'
 
 # Assets JS
 ########################################
 run 'rm -rf app/assets/javascripts'
-run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/rails-javascripts/-/archive/master/rails-javascripts-master.zip > javascripts.zip'
+run 'curl -L https://github.com/ubi-legal-innovation-team/rails-javascripts/archive/master.zip > javascripts.zip'
 run 'unzip javascripts.zip -d app/assets && rm javascripts.zip && mv app/assets/rails-javascripts-master app/assets/javascripts'
 
 # Assets fonts
 ########################################
 run 'rm -rf app/assets/fonts'
-run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/rails-fonts/-/archive/master/rails-fonts-master.zip > fonts.zip'
+run 'curl -L https://github.com/ubi-legal-innovation-team/rails-fonts/archive/master.zip > fonts.zip'
 run 'unzip fonts.zip -d app/assets && rm fonts.zip && mv app/assets/rails-fonts-master app/assets/fonts'
 
 # Assets images
 ########################################
 run 'rm -rf app/assets/images'
-run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/rails-images/-/archive/master/rails-images-master.zip > images.zip'
+run 'curl -L https://github.com/ubi-legal-innovation-team/rails-images/archive/master.zip > images.zip'
 run 'unzip images.zip -d app/assets && rm images.zip && mv app/assets/rails-images-master app/assets/images'
 
 # Dev environment
@@ -98,12 +98,12 @@ HTML
 file 'app/views/shared/navbar_components/_user_nav.html.erb', <<~HTML
 HTML
 
-run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/rails-partials/-/raw/master/partials/_flashes.html.erb > app/views/shared/_flashes.html.erb'
-run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/rails-partials/-/raw/master/partials/_footer.html.erb > app/views/shared/_footer.html.erb'
-run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/rails-partials/-/raw/master/partials/_navbar.html.erb > app/views/shared/_navbar.html.erb'
-run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/rails-partials/-/raw/master/partials/navbar_components/_menu.html.erb > app/views/shared/navbar_components/_menu.html.erb'
-run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/rails-partials/-/raw/master/partials/navbar_components/_notifications.html.erb > app/views/shared/navbar_components/_notifications.html.erb'
-run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/rails-partials/-/raw/master/partials/navbar_components/_user_nav.html.erb > app/views/shared/navbar_components/_user_nav.html.erb'
+run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/_flashes.html.erb > app/views/shared/_flashes.html.erb'
+run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/_footer.html.erb > app/views/shared/_footer.html.erb'
+run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/_navbar.html.erb > app/views/shared/_navbar.html.erb'
+run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/navbar_components/_menu.html.erb > app/views/shared/navbar_components/_menu.html.erb'
+run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/navbar_components/_notifications.html.erb > app/views/shared/navbar_components/_notifications.html.erb'
+run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/navbar_components/_user_nav.html.erb > app/views/shared/navbar_components/_user_nav.html.erb'
 
 inject_into_file 'app/views/layouts/application.html.erb', after: "<body>" do
   <<-HTML
@@ -129,7 +129,7 @@ end
 # README
 ########################################
 markdown_file_content = <<~MARKDOWN
-  Rails app generated with [ubi-legal-innovation-team/templates](https://gitlab-ncsa.ubisoft.org/adhuy/templates), created by the [Innovation Legal](https://www.legallab.ubisoft.org/crew) team.
+  Rails app generated with [ubi-legal-innovation-team/templates](https://github.com/ubi-legal-innovation-team/templates), created by the [Innovation Legal](https://www.legallab.ubisoft.org/crew) team.
 MARKDOWN
 file 'README.md', markdown_file_content, force: true
 
@@ -170,8 +170,8 @@ after_bundle do
   file 'app/views/pages/welcome.html.erb', <<~HTML
   HTML
 
-  run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/rails-pages/-/raw/master/home.html.erb > app/views/pages/home.html.erb'
-  run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/rails-pages/-/raw/master/welcome.html.erb > app/views/pages/welcome.html.erb'
+  run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-pages/master/home.html.erb > app/views/pages/home.html.erb'
+  run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-pages/master/welcome.html.erb > app/views/pages/welcome.html.erb'
 
   # Git ignore
   ########################################
@@ -274,12 +274,12 @@ after_bundle do
 
   # Rubocop
   ########################################
-  run 'curl -L https://gitlab-ncsa.ubisoft.org/adhuy/templates/-/raw/master/rubocop.yml > .rubocop.yml'
+  run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/templates/master/rubocop.yml > .rubocop.yml'
 
   # Git
   ########################################
   git add: '.'
-  git commit: "-m 'Initial commit with minimal template from https://gitlab-ncsa.ubisoft.org/adhuy/templates'"
+  git commit: "-m 'Initial commit with minimal template from https://github.com/ubi-legal-innovation-team/templates'"
 
   # Fix puma config
   gsub_file('config/puma.rb', 'pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }', '# pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }')
