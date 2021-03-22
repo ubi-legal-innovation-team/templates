@@ -5,7 +5,6 @@ run "if uname | grep -q 'Darwin'; then pgrep spring | xargs kill -9; fi"
 inject_into_file 'Gemfile', before: 'group :development, :test do' do
   <<~RUBY
     gem 'autoprefixer-rails'
-    gem 'simple_form'
     gem 'uglifier'
     gem 'jquery-rails'
     gem "strip_attributes"
@@ -152,7 +151,6 @@ after_bundle do
   # Generators: db + simple form + pages controller
   ########################################
   rails_command 'db:drop db:create db:migrate'
-  generate('simple_form:install')
   generate(:controller, 'pages', 'home', '--skip-routes', '--no-test-framework')
   generate(:controller, 'pages', 'welcome', '--skip-routes', '--no-test-framework')
 
