@@ -7,6 +7,7 @@ inject_into_file 'Gemfile', before: 'group :development, :test do' do
     gem 'autoprefixer-rails'
     gem 'uglifier'
     gem 'jquery-rails'
+    gem 'font-awesome-sass', '~> 5.6.1'
     gem "strip_attributes"
     # Use Redis adapter to run Action Cable in production
     gem 'sidekiq'
@@ -208,7 +209,7 @@ after_bundle do
 
   # Webpacker / Yarn
   ########################################
-  run 'yarn add popper.js jquery'
+  run 'yarn add popper.js jquery @fortawesome/fontawesome-free'
   append_file 'app/javascript/packs/application.js', <<~JS
     // ----------------------------------------------------
     // Note(Legal lab): ABOVE IS RAILS DEFAULT CONFIGURATION
