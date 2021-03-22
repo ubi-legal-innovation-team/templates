@@ -7,7 +7,8 @@ inject_into_file 'Gemfile', before: 'group :development, :test do' do
     gem 'autoprefixer-rails'
     gem 'uglifier'
     gem 'jquery-rails'
-    gem 'font-awesome-sass', '~> 5.6.1'
+    gem 'font-awesome-sass'
+    gem 'simple_form'
     gem "strip_attributes"
     # Use Redis adapter to run Action Cable in production
     gem 'sidekiq'
@@ -152,6 +153,7 @@ after_bundle do
   # Generators: db + simple form + pages controller
   ########################################
   rails_command 'db:drop db:create db:migrate'
+  generate('simple_form:install', '--bootstrap')
   generate(:controller, 'pages', 'home', '--skip-routes', '--no-test-framework')
   generate(:controller, 'pages', 'welcome', '--skip-routes', '--no-test-framework')
 
@@ -209,13 +211,15 @@ after_bundle do
 
   # Webpacker / Yarn
   ########################################
-  run 'yarn add popper.js jquery @fortawesome/fontawesome-free'
+  run 'yarn add popper.js jquery @fortawesome/fontawesome-free bootstrap'
   append_file 'app/javascript/packs/application.js', <<~JS
     // ----------------------------------------------------
     // Note(Legal lab): ABOVE IS RAILS DEFAULT CONFIGURATION
     // WRITE YOUR OWN JS STARTING FROM HERE 👇
     // ----------------------------------------------------
+
     // External imports
+    import "bootstrap";
 
     // Internal imports, e.g:
     // import { initSelect2 } from '../components/init_select2';
