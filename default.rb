@@ -8,7 +8,6 @@ inject_into_file 'Gemfile', before: 'group :development, :test do' do
     gem 'uglifier'
     gem 'jquery-rails'
     gem 'font-awesome-sass'
-    gem 'simple_form'
     gem "strip_attributes"
     # Use Redis adapter to run Action Cable in production
     gem 'sidekiq'
@@ -150,10 +149,9 @@ environment generators
 # AFTER BUNDLE
 ########################################
 after_bundle do
-  # Generators: db + simple form + pages controller
+  # Generators: db + pages controller
   ########################################
   rails_command 'db:drop db:create db:migrate'
-  generate('simple_form:install', '--bootstrap')
   generate(:controller, 'pages', 'home', '--skip-routes', '--no-test-framework')
   generate(:controller, 'pages', 'welcome', '--skip-routes', '--no-test-framework')
 
@@ -211,7 +209,7 @@ after_bundle do
 
   # Webpacker / Yarn
   ########################################
-  run 'yarn add popper.js jquery @fortawesome/fontawesome-free bootstrap'
+  run 'yarn add popper.js jquery @fortawesome/fontawesome-free'
   append_file 'app/javascript/packs/application.js', <<~JS
     // ----------------------------------------------------
     // Note(Legal lab): ABOVE IS RAILS DEFAULT CONFIGURATION
@@ -219,7 +217,6 @@ after_bundle do
     // ----------------------------------------------------
 
     // External imports
-    import "bootstrap";
 
     // Internal imports, e.g:
     // import { initSelect2 } from '../components/init_select2';
@@ -234,7 +231,6 @@ after_bundle do
       const webpack = require('webpack');
       // Preventing Babel from transpiling NodeModules packages
       environment.loaders.delete('nodeModules');
-      // Bootstrap 4 has a dependency over jQuery & Popper.js:
       environment.plugins.prepend('Provide',
         new webpack.ProvidePlugin({
           $: 'jquery',
@@ -268,7 +264,7 @@ after_bundle do
     # Precompile additional assets.
     # application.js, application.css, and all non-JS/CSS in the app/assets
     # folder are already added.
-    #{"Rails.application.config.assets.precompile += %w( application.js application.scss )"}
+    #{"Rails.application.config.assets.precompile += %w( application.js application.css application.scss )"}
   RUBY
 
   # Dotenv
