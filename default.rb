@@ -109,6 +109,12 @@ file 'app/views/shared/navbar_components/_notifications.html.erb', <<~HTML
 HTML
 file 'app/views/shared/navbar_components/_user_nav.html.erb', <<~HTML
 HTML
+file 'app/views/ajax/ajax_calls/_user_nav.html.erb', <<~HTML
+HTML
+file 'app/views/ajax/ajax_calls/_notifications.html.erb', <<~HTML
+HTML
+file 'app/views/ajax/ajax_calls/modals/_example.html.erb', <<~HTML
+HTML
 
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/_flashes.html.erb > app/views/shared/_flashes.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/_footer.html.erb > app/views/shared/_footer.html.erb'
@@ -116,6 +122,9 @@ run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-p
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/navbar_components/_menu.html.erb > app/views/shared/navbar_components/_menu.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/navbar_components/_notifications.html.erb > app/views/shared/navbar_components/_notifications.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/navbar_components/_user_nav.html.erb > app/views/shared/navbar_components/_user_nav.html.erb'
+run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/ajax/ajax_calls/_user_nav.html.erb > app/views/ajax/ajax_calls/_user_nav.html.erb'
+run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/ajax/ajax_calls/_notifications.html.erb > app/views/ajax/ajax_calls/_notifications.html.erb'
+run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/ajax/ajax_calls/modals/_example.html.erb > app/views/ajax/ajax_calls/modals/_example.html.erb'
 
 # Application layout
 
@@ -196,6 +205,10 @@ after_bundle do
   route "root         to: 'pages#welcome'"
   route "get '/home', to: 'pages#home', as: 'home'"
 
+  route "get '/user-nav/call', to: 'application#user_nav_call', as: 'user_nav_call'"
+  route "get '/notifications/call', to: 'application#notifications_call', as: 'notifications_call'"
+  route "get '/example-modal/call', to: 'application#example_modal_call', as: 'example_modal_call'"
+
   # Pages
   ########################################
   run 'rm -rf app/views/pages/home.html.erb'
@@ -224,8 +237,34 @@ after_bundle do
   file 'app/controllers/application_controller.rb', <<~RUBY
     class ApplicationController < ActionController::Base
       #{"protect_from_forgery with: :exception"}
+
+      def example_modal_call
+        params.extract!("utf8", "authenticity_token", "controller", "action")
+        unsafe_params = params.to_unsafe_hash
+        render partial: "/ajax/ajax_calls/modals/example"
+      end
+
+      def user_nav_call
+        params.extract!("utf8", "authenticity_token", "controller", "action")
+        unsafe_params = params.to_unsafe_hash
+        render partial: "/ajax/ajax_calls/user_nav"
+      end
+
+      def notifications_call
+        params.extract!("utf8", "authenticity_token", "controller", "action")
+        unsafe_params = params.to_unsafe_hash
+        render partial: "/ajax/ajax_calls/notifications"
+      end
     end
   RUBY
+
+  inject_into_file 'app/controllers/application_controller.rb', after: 'notifications_call' do
+    <<~TXT
+      # Notification.user(current_user.id).recent.unview.each do |notification|
+      #   notification.update(view:true)
+      # end
+    TXT
+  end
 
   # App helpers
   ########################################
