@@ -12,6 +12,7 @@ inject_into_file 'Gemfile', before: 'group :development, :test do' do
     # Use Redis adapter to run Action Cable in production
     gem 'sidekiq'
     gem 'sidekiq-failures', '~> 1.0'
+    gem 'sidekiq-cron'
   RUBY
 end
 
@@ -62,6 +63,9 @@ gsub_file('config/environments/development.rb', /config\.assets\.debug.*/, 'conf
 
 # Layout
 ########################################
+
+# Application layout
+
 if Rails.version < "6"
   scripts = <<~HTML
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
@@ -82,6 +86,14 @@ style = <<~HTML
       <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 HTML
 gsub_file('app/views/layouts/application.html.erb', "<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>", style)
+
+# Welcome layout
+
+style = <<~HTML
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+HTML
+gsub_file('app/views/layouts/welcome.html.erb', "<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>", style)
 
 # Partials
 ########################################
@@ -105,6 +117,8 @@ run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-p
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/navbar_components/_notifications.html.erb > app/views/shared/navbar_components/_notifications.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/navbar_components/_user_nav.html.erb > app/views/shared/navbar_components/_user_nav.html.erb'
 
+# Application layout
+
 inject_into_file 'app/views/layouts/application.html.erb', after: "<body>" do
   <<-HTML
 
@@ -119,6 +133,16 @@ inject_into_file 'app/views/layouts/application.html.erb', after: "<%= yield %>"
     <%#= render 'shared/footer' %>
   HTML
 end
+
+# Welcome layout
+
+inject_into_file 'app/views/layouts/welcome.html.erb', after: "<body>" do
+  <<-HTML
+
+    <%= render 'shared/navbar' %>
+  HTML
+end
+
 
 # Public
 ########################################
@@ -154,6 +178,18 @@ after_bundle do
   rails_command 'db:drop db:create db:migrate'
   generate(:controller, 'pages', 'home', '--skip-routes', '--no-test-framework')
   generate(:controller, 'pages', 'welcome', '--skip-routes', '--no-test-framework')
+
+  inject_into_file 'app/controllers/pages_controller.rb', after: "def home" do
+    <<-RUBY
+    render :home
+    RUBY
+  end
+
+  inject_into_file 'app/controllers/pages_controller.rb', after: "def welcome" do
+    <<-RUBY
+    render layout: 'welcome'
+    RUBY
+  end
 
   # Routes
   ########################################
