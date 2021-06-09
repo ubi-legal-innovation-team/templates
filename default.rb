@@ -87,16 +87,51 @@ style = <<~HTML
 HTML
 gsub_file('app/views/layouts/application.html.erb', "<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>", style)
 
+inject_into_file 'app/views/layouts/application.html.erb', after: "<body>" do
+  <<-HTML
+
+    <%= render 'shared/navbar' %>
+    <%#= render 'shared/flashes' %>
+  HTML
+end
+
+inject_into_file 'app/views/layouts/application.html.erb', after: "<%= yield %>" do
+  <<-HTML
+
+    <%#= render 'shared/footer' %>
+  HTML
+end
+
 # Welcome layout
 
 file 'app/views/layouts/welcome.html.erb', <<~HTML
 HTML
 
-style = <<~HTML
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-HTML
-gsub_file('app/views/layouts/welcome.html.erb', "<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>", style)
+inject_into_file 'app/views/layouts/welcome.html.erb' do
+  <<-HTML
+
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>LegalLab welcome</title>
+
+        <%= csrf_meta_tags %>
+        <%= action_cable_meta_tag %>
+        <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+      </head>
+
+      <body>
+        <%= render "shared/navbar" %>
+        <%= yield %>
+      </body>
+    </html>
+
+  HTML
+end
+
 
 # Partials
 ########################################
@@ -128,32 +163,6 @@ run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-p
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/ajax/ajax_calls/_user_nav.html.erb > app/views/ajax/ajax_calls/_user_nav.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/ajax/ajax_calls/_notifications.html.erb > app/views/ajax/ajax_calls/_notifications.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/ajax/ajax_calls/modals/_example.html.erb > app/views/ajax/ajax_calls/modals/_example.html.erb'
-
-# Application layout
-
-inject_into_file 'app/views/layouts/application.html.erb', after: "<body>" do
-  <<-HTML
-
-    <%= render 'shared/navbar' %>
-    <%#= render 'shared/flashes' %>
-  HTML
-end
-
-inject_into_file 'app/views/layouts/application.html.erb', after: "<%= yield %>" do
-  <<-HTML
-
-    <%#= render 'shared/footer' %>
-  HTML
-end
-
-# Welcome layout
-
-inject_into_file 'app/views/layouts/welcome.html.erb', after: "<body>" do
-  <<-HTML
-
-    <%= render 'shared/navbar' %>
-  HTML
-end
 
 
 # Public
@@ -188,18 +197,20 @@ after_bundle do
   # Generators: db + pages controller
   ########################################
   rails_command 'db:drop db:create db:migrate'
-  generate(:controller, 'pages', 'home', '--skip-routes', '--no-test-framework')
-  generate(:controller, 'pages', 'welcome', '--skip-routes', '--no-test-framework')
+  generate(:controller, 'pages', ['home','welcome'], '--skip-routes', '--no-test-framework')
+  # generate(:controller, 'pages', 'welcome', '--skip-routes', '--no-test-framework')
 
   inject_into_file 'app/controllers/pages_controller.rb', after: "def home" do
     <<-RUBY
-    render :home
+
+      render :home
     RUBY
   end
 
   inject_into_file 'app/controllers/pages_controller.rb', after: "def welcome" do
     <<-RUBY
-    render layout: 'welcome'
+
+      render layout: 'welcome'
     RUBY
   end
 
