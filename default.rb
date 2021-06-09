@@ -66,20 +66,13 @@ gsub_file('config/environments/development.rb', /config\.assets\.debug.*/, 'conf
 
 # Application layout
 
-if Rails.version < "6"
-  scripts = <<~HTML
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
-        <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  HTML
-  gsub_file('app/views/layouts/application.html.erb', "<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>", scripts)
-end
-
-scripts = <<~HTML
-    <%= javascript_pack_tag 'application' %>
-        <%= javascript_include_tag 'application' %>
-  HTML
-
-gsub_file('app/views/layouts/application.html.erb', "<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>", scripts)
+# if Rails.version < "6"
+#   scripts = <<~HTML
+#     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
+#         <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+#   HTML
+#   gsub_file('app/views/layouts/application.html.erb', "<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>", scripts)
+# end
 
 style = <<~HTML
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -92,6 +85,14 @@ inject_into_file 'app/views/layouts/application.html.erb', after: "<body>" do
 
     <%= render 'shared/navbar' %>
     <%#= render 'shared/flashes' %>
+  HTML
+end
+
+inject_into_file 'app/views/layouts/application.html.erb', before: "</body>" do
+  <<-HTML
+
+    <%= javascript_pack_tag 'application' %>
+    <%= javascript_include_tag 'application' %>
   HTML
 end
 
