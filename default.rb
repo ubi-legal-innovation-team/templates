@@ -75,7 +75,7 @@ if Rails.version < "6"
 end
 
 scripts = <<~HTML
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application' %>
         <%= javascript_include_tag 'application' %>
   HTML
 
@@ -110,24 +110,24 @@ HTML
 inject_into_file 'app/views/layouts/welcome.html.erb' do
   <<-HTML
 
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <title>LegalLab welcome</title>
+      <title>[APP NAME]</title>
 
-        <%= csrf_meta_tags %>
-        <%= action_cable_meta_tag %>
-        <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-      </head>
+      <%= csrf_meta_tags %>
+      <%= action_cable_meta_tag %>
+      <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    </head>
 
-      <body>
-        <%= render "shared/navbar" %>
-        <%= yield %>
-      </body>
-    </html>
+    <body>
+      <%= render "shared/navbar" %>
+      <%= yield %>
+    </body>
+  </html>
 
   HTML
 end
@@ -203,14 +203,14 @@ after_bundle do
   inject_into_file 'app/controllers/pages_controller.rb', after: "def home" do
     <<-RUBY
 
-      render :home
+    render :home
     RUBY
   end
 
   inject_into_file 'app/controllers/pages_controller.rb', after: "def welcome" do
     <<-RUBY
 
-      render layout: 'welcome'
+    render layout: 'welcome'
     RUBY
   end
 
@@ -274,6 +274,7 @@ after_bundle do
 
   inject_into_file 'app/controllers/application_controller.rb', after: 'notifications_call' do
     <<~TXT
+
       # Notification.user(current_user.id).recent.unview.each do |notification|
       #   notification.update(view:true)
       # end
