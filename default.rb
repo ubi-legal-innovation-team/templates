@@ -148,6 +148,8 @@ file 'app/views/shared/navbar_components/_notifications.html.erb', <<~HTML
 HTML
 file 'app/views/shared/navbar_components/_user_nav.html.erb', <<~HTML
 HTML
+file 'app/views/shared/navbar_components/responsive/_menu.html.erb', <<~HTML
+HTML
 file 'app/views/ajax/ajax_calls/_user_nav.html.erb', <<~HTML
 HTML
 file 'app/views/ajax/ajax_calls/_notifications.html.erb', <<~HTML
@@ -161,6 +163,7 @@ run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-p
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/navbar_components/_menu.html.erb > app/views/shared/navbar_components/_menu.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/navbar_components/_notifications.html.erb > app/views/shared/navbar_components/_notifications.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/navbar_components/_user_nav.html.erb > app/views/shared/navbar_components/_user_nav.html.erb'
+run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/partials/navbar_components/responsive/_menu.html.erb > app/views/shared/navbar_components/responsive/_menu.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/ajax/ajax_calls/_user_nav.html.erb > app/views/ajax/ajax_calls/_user_nav.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/ajax/ajax_calls/_notifications.html.erb > app/views/ajax/ajax_calls/_notifications.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/ajax/ajax_calls/modals/_example.html.erb > app/views/ajax/ajax_calls/modals/_example.html.erb'
