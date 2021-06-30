@@ -65,7 +65,6 @@ gsub_file('config/environments/development.rb', /config\.assets\.debug.*/, 'conf
 ########################################
 
 # Application layout
-
 # if Rails.version < "6"
 #   scripts = <<~HTML
 #     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
@@ -104,13 +103,10 @@ inject_into_file 'app/views/layouts/application.html.erb', after: "<%= yield %>"
 end
 
 # Welcome layout
-
 file 'app/views/layouts/welcome.html.erb', <<~HTML
 HTML
-
 inject_into_file 'app/views/layouts/welcome.html.erb' do
   <<-HTML
-
   <!DOCTYPE html>
   <html>
     <head>
@@ -129,10 +125,8 @@ inject_into_file 'app/views/layouts/welcome.html.erb' do
       <%= yield %>
     </body>
   </html>
-
   HTML
 end
-
 
 # Partials
 ########################################
@@ -170,7 +164,6 @@ run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-p
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/ajax/ajax_calls/dropdowns/_notifications.html.erb > app/views/ajax/ajax_calls/dropdowns/_notifications.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/ajax/ajax_calls/dropdowns/_menu_responsive.html.erb > app/views/ajax/ajax_calls/dropdowns/_menu_responsive.html.erb'
 run 'curl -L https://raw.githubusercontent.com/ubi-legal-innovation-team/rails-partials/master/ajax/ajax_calls/modals/_example.html.erb > app/views/ajax/ajax_calls/modals/_example.html.erb'
-
 
 # Public
 ########################################
@@ -226,9 +219,10 @@ after_bundle do
   route "root         to: 'pages#welcome'"
   route "get '/home', to: 'pages#home', as: 'home'"
 
-  route "get '/user-nav/call',      to: 'application#user_nav_call',      as: 'user_nav_call'"
-  route "get '/notifications/call', to: 'application#notifications_call', as: 'notifications_call'"
-  route "get '/example-modal/call', to: 'application#example_modal_call', as: 'example_modal_call'"
+  route "get '/user-nav/call',        to: 'application#user_nav_call',        as: 'user_nav_call'"
+  route "get '/notifications/call',   to: 'application#notifications_call',   as: 'notifications_call'"
+  route "get '/menu-responsive/call', to: 'application#menu_responsive_call', as: 'menu_responsive_call'"
+  route "get '/example-modal/call',   to: 'application#example_modal_call',   as: 'example_modal_call'"
 
   # Pages
   ########################################
@@ -266,14 +260,14 @@ after_bundle do
       end
 
       def user_nav_call
-        params.extract!("utf8", "authenticity_token", "controller", "action")
-        unsafe_params = params.to_unsafe_hash
         render partial: "/ajax/ajax_calls/user_nav"
       end
 
+      def menu_responsive_call
+        render partial: "/ajax/ajax_calls/dropdowns/menu_responsive"
+      end
+
       def notifications_call
-        params.extract!("utf8", "authenticity_token", "controller", "action")
-        unsafe_params = params.to_unsafe_hash
         render partial: "/ajax/ajax_calls/notifications"
       end
     end
