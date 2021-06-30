@@ -260,7 +260,7 @@ after_bundle do
       end
 
       def user_nav_call
-        render partial: "/ajax/ajax_calls/user_nav"
+        render partial: "/ajax/ajax_calls/dropdowns/user_nav"
       end
 
       def menu_responsive_call
@@ -268,7 +268,7 @@ after_bundle do
       end
 
       def notifications_call
-        render partial: "/ajax/ajax_calls/notifications"
+        render partial: "/ajax/ajax_calls/dropdowns/notifications"
       end
     end
   RUBY
